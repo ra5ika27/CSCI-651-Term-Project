@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Improved_Main {
 
@@ -9,43 +8,41 @@ public class Improved_Main {
 
         String[] splitIp = ipAddress.split("\\.");
         String networkPrefix = "";
+        String binaryIp = "";
 
         for(String ipPart: splitIp){
 
-            if(networkPrefix.length() != subnet) {
-                int intIp = Integer.parseInt(ipPart);
-                networkPrefix += String.format("%8s",Integer.toBinaryString(intIp)).replace(" ","0");
-            }
+//            if(networkPrefix.length() != subnet) {
+//                int intIp = Integer.parseInt(ipPart);
+//                networkPrefix += String.format("%8s",Integer.toBinaryString(intIp)).replace(" ","0");
+//            }
 
+            int intIp = Integer.parseInt(ipPart);
+            binaryIp += String.format("%8s",Integer.toBinaryString(intIp)).replace(" ","0");
+//            if(subnet >= 8) {
+//                networkPrefix += binaryIp;
+//                subnet = subnet - 8;
+//            }else if(subnet!=0){
+//                networkPrefix += binaryIp
         }
+
+        networkPrefix = binaryIp.substring(0,subnet);
+        System.out.println("Prefix length"+networkPrefix.length());
         return networkPrefix;
     }
 
     public static void main(String[] args) {
 
-        BufferedReader br = null;
-        Improved_Node root = null;
+        BufferedReader br;
+        Poptrie_Node root = null;
         try {
 
             br = new BufferedReader(new FileReader("/Users/rasikathorat/IdeaProjects/FCN/src/CSCi-651-Term-Project/dataset.txt"));
             String c;
             while((c = br.readLine())!=null){
-
-//                String[] split = c.split("\\s+");
-//                StringBuilder ipAddress = new StringBuilder();
-//                int i;
-//                for(i=0;i<split[0].length()-3;i++){
-//                    ipAddress.append(split[0].charAt(i));
-//                }
-//
-//                int subnet = Integer.parseInt(c.substring(i+1,split[0].length()));
-//                String nextHop = c.substring(20,c.length());
-//                String netPrefix = ipToPrefix(subnet, ipAddress.toString());
-
-                String nextHop = "";
+                String nextHop;
                 String ipAddress = "";
                 String subnet = "";
-                int start = 0;
                 char ch = c.charAt(0);
 
                 int i = 0;
@@ -61,20 +58,23 @@ public class Improved_Main {
                     subnet += ch;
                     i++;
                     ch = c.charAt(i);
-
-
                 }
+
                 nextHop = c.substring(i+1,c.length());
                 System.out.println(nextHop);
                 System.out.println(subnet);
                 String netPrefix = ipToPrefix(Integer.parseInt(subnet),ipAddress);
                 System.out.println(netPrefix);
                 if(root == null)
-                    root = Improved_Node.insert(null, netPrefix, 0, nextHop);
+                    root = Poptrie_Node.insert(null, netPrefix, 0, nextHop);
 
                 else
-                    root = Improved_Node.insert(root,netPrefix,0,nextHop);
+                    root = Poptrie_Node.insert(root,netPrefix,0,nextHop);
             }
+
+            ArrayList<Integer> L = new ArrayList<>();
+            ArrayList<Integer> N = new ArrayList<>();
+            //Poptrie_population.populate(root,L,N);
 
         }catch (FileNotFoundException e){
             System.out.println("File not found");
