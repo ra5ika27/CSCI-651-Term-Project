@@ -1,7 +1,7 @@
-# CSCi-651-Term-Project
-========================
- Poptrie Implementation
-========================
+# CSCI-651-Term-Project
+
+Poptrie Implementation
+
 
 Authors : Rasika Rajeev Thorat, Sudheeksha Garg, Hannah Miller
 Date    : 2018-12-10
